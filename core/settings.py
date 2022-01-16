@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pet_finder',
     'phonenumber_field',
+    'rest_framework',
+    'django_filters',
 
 ]
 
