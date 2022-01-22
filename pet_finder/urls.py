@@ -1,5 +1,5 @@
 from .views import *
-from rest_framework import routers, urlpatterns
+from rest_framework import routers
 from django.urls import path,include
 
 router = routers.DefaultRouter()
