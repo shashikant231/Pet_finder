@@ -67,7 +67,7 @@ class User(AbstractBaseUser, CommonFields,PermissionsMixin):
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name', 'first_name']
+    REQUIRED_FIELDS = ['user_name', 'first_name',"user_type"]
 
     def __str__(self):
         return self.user_name

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'pet_finder',
     'phonenumber_field',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'django_filters',
 
 ]
@@ -115,6 +117,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
 
 
 # Static files (CSS, JavaScript, Images)
