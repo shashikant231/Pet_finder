@@ -12,6 +12,13 @@ class PetSerializer(serializers.ModelSerializer):
         model = Pet
         fields = "__all__"
 
+    def to_representation(self, instance):
+        res = super().to_representation(instance)
+        animal_id = res['animal_shelter']
+        animal_name = AnimalShelter.objects.filter(id=animal_id).values('name')
+        res['animal_shelter'] = animal_name[0]['name']
+        return res
+
 class AnimalShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnimalShelter
