@@ -16,7 +16,7 @@ class PetSerializer(serializers.ModelSerializer):
         res = super().to_representation(instance)
         animal_id = res['animal_shelter']
         animal_name = AnimalShelter.objects.filter(id=animal_id).values('organisations_name')
-        res['animal_shelter'] = animal_name[0]['organisations_name']
+        res['animal_shelter_name'] = animal_name[0]['organisations_name']
         return res
 
 class AnimalShelterSerializer(serializers.ModelSerializer):
