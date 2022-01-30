@@ -73,17 +73,20 @@ class User(AbstractBaseUser, CommonFields,PermissionsMixin):
         return self.user_name
 
 class AnimalShelter(models.Model):
-    contact_no = PhoneNumberField("Phone Number", help_text=PHONE_HELP_TEXT)
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="animal_name")
-    name = models.CharField(max_length=100)
-    email = models.EmailField("Email", max_length=50)
+    organisations_name = models.CharField(max_length=100)
+    contact_no = PhoneNumberField("Phone Number", help_text=PHONE_HELP_TEXT)
     pincode = models.IntegerField(
         "PIN code",
         help_text="6 digits [0-9] PIN code",
         validators=[MinValueValidator(100000), MaxValueValidator(999999)],
     )
+    state = models.CharField(max_length=50,null=False)
+    city = models.CharField(max_length=80,null=False)
+    organisations_mission = models.TextField(null=True,blank=True)
+    organisations_policies = models.TextField(null=True,blank=True)
     def __str__(self):
-        return self.name
+        return self.organisations_name
 
 
 
@@ -101,6 +104,8 @@ class Pet(models.Model):
     second_image = models.ImageField(upload_to ='media/')
     animal_shelter = models.ForeignKey(AnimalShelter,on_delete=models.Case,related_name="pet_shelter")
     adoption_fee = models.PositiveIntegerField(blank=True)
+    is_rescued = models.BooleanField(default=False)
+    story = models.TextField(null=True,blank=True)
 
     def __str__(self) -> str:
         return f"Name and Breed:{self.name} - {self.breed}"
