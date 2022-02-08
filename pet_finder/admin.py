@@ -5,4 +5,5 @@ from .models import *
 admin.site.register(User)
 admin.site.register(Pet)
 admin.site.register(AnimalShelter)
+admin.site.register(AdoptionForm)
 

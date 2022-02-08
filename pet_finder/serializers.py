@@ -23,3 +23,10 @@ class AnimalShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnimalShelter
         fields = "__all__"
+
+class AdoptionFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdoptionForm
+        fields = "__all__"
+        # fields = ['user']
+        depth = 1

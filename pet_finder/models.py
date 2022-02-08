@@ -1,11 +1,20 @@
 from django.db import models
+from django.conf import settings
+from django.utils import tree
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import (
     MinValueValidator,
-    MaxValueValidator
-)
+    MaxValueValidator)
+
+# from django.dispatch import receiver
+# from django.db.models.signals import (
+#     pre_save,
+#     post_save,
+#     post_delete
+
+# )
 
 PHONE_HELP_TEXT = "For e.g +91-95544-95544, +91-12345-54321, etc."
 
@@ -72,6 +81,7 @@ class User(AbstractBaseUser, CommonFields,PermissionsMixin):
     def __str__(self):
         return self.user_name
 
+
 class AnimalShelter(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="animal_name")
     organisations_name = models.CharField(max_length=100)
@@ -108,13 +118,59 @@ class Pet(models.Model):
     adoption_fee = models.PositiveIntegerField(blank=True)
     is_rescued = models.BooleanField(default=False)
     story = models.TextField(null=True,blank=True)
+    pincode = models.IntegerField(
+        "PIN code",
+        help_text="6 digits [0-9] PIN code",
+        validators=[MinValueValidator(100000), MaxValueValidator(999999)],
+    )
 
     def __str__(self) -> str:
         return f"Name and Breed:{self.name} - {self.breed}"
 
+class AdoptionForm(models.Model):
+    user  = models.ForeignKey(User,on_delete=models.CASCADE,related_name="adoption_form_user")
+    state = models.CharField(max_length=200,null=True,blank=True)
+    city = models.CharField(max_length=200,null=True,blank=True)
+    street_address = models.CharField(max_length=300,null=True,blank=True)
+    pincode = models.IntegerField(
+        "PIN code",
+        help_text="6 digits [0-9] PIN code",
+        validators=[MinValueValidator(100000), MaxValueValidator(999999)],
+    )
+    house_choice = (("rent","rent"),("own house","own house"))
+    house = models.CharField(max_length=15,choices=house_choice)
+    is_allergies = models.BooleanField(default=False)
+    is_fenced = models.BooleanField(default=False)
+    why_do_you_want_a_dog = models.TextField()
+    dog_be_confined_to_your_own_property = models.TextField()
+    provide_exercise = models.TextField()
+    training_willing_to_provide = models.TextField()
+    correct_dog_if_misbehaves = models.TextField()
+    takes_to_support_a_dog = models.TextField()
+    choose_this_particular_dog = models.TextField()
 
 
-    
+
+
+
+
+
+# @receiver(pre_save,sender = settings.AUTH_USER_MODEL)
+# def pre_save_method(sender,instance,*args,**kwargs):
+#     print(instance.email,instance.id)
+
+
+
+# @receiver(post_save,sender = settings.AUTH_USER_MODEL)
+# def show_instance(sender,instance,created,*args,**kwargs):
+#     if created == True:
+#         print(f"created new object:sending mail to {instance.email}")
+#     else:
+#         print(f"updated object:sending mail to {instance.email}")
+
+# @receiver(post_delete,sender = settings.AUTH_USER_MODEL)
+# def delete_instance(sender,instance,created,*args,**kwargs):
+#     print(f"Deleted : {instance}")
 
 
 

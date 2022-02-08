@@ -17,4 +17,8 @@ class AnimalShelterViewset(viewsets.ModelViewSet):
     queryset = AnimalShelter.objects.all()
     serializer_class = AnimalShelterSerializer
 
+class AdoptionFormViewset(viewsets.ModelViewSet):
+    queryset = AdoptionForm.objects.all()
+    serializer_class =AdoptionFormSerializer
+
 
