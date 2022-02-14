@@ -14,8 +14,11 @@ class PetSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         res = super().to_representation(instance)
-        animal_id = res['animal_shelter']
+        animal_id = res['animalshelter']
         animal_name = AnimalShelter.objects.filter(id=animal_id).values('organisations_name')
+        res['pincode'] = AnimalShelter.objects.filter(id = animal_id).values('pincode')[0]['pincode']
+        res['state'] = AnimalShelter.objects.filter(id = animal_id).values('state')[0]['state']
+        res['city'] = AnimalShelter.objects.filter(id = animal_id).values('city')[0]['city']
         res['animal_shelter_name'] = animal_name[0]['organisations_name']
         return res
 
@@ -28,5 +31,13 @@ class AdoptionFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdoptionForm
         fields = "__all__"
-        # fields = ['user']
-        depth = 1
+
+        # AnimalShelter.objects.filter(id=animal_id).values('organisations_name')
+    def to_representation(self, instance):
+        print(instance)
+        resp = super().to_representation(instance)
+        animal_sheler_id = resp['send_form_to']
+        resp['pincode'] = AnimalShelter.objects.filter(id = animal_sheler_id).values('pincode')[0]['pincode']
+        resp['state'] = AnimalShelter.objects.filter(id = animal_sheler_id).values('state')[0]['state']
+        resp['city'] = AnimalShelter.objects.filter(id = animal_sheler_id).values('city')[0]['city']
+        return resp

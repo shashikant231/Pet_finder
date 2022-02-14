@@ -8,13 +8,18 @@ from django.core.validators import (
     MinValueValidator,
     MaxValueValidator)
 
-# from django.dispatch import receiver
-# from django.db.models.signals import (
-#     pre_save,
-#     post_save,
-#     post_delete
+from django.dispatch import receiver
+from django.db.models.signals import (
+    pre_save,
+    post_save,
+    post_delete
 
-# )
+)
+from django.core.mail import send_mail
+from django.conf import settings
+import json
+
+
 
 PHONE_HELP_TEXT = "For e.g +91-95544-95544, +91-12345-54321, etc."
 
@@ -112,31 +117,27 @@ class Pet(models.Model):
     vaccination_choices = (("Not Vaccianted", "Not Vaccianted"), ("Partially Vaccinated", "Partially Vaccinated"),("Completely vaccinated","Completely Vaccinated"))
     vaccination = models.CharField(choices=vaccination_choices,max_length=30,blank=False)
     first_image = models.ImageField(upload_to ='media/')
-    second_image = models.ImageField(upload_to ='media/',null = True)
-    third_image = models.ImageField(upload_to ='media/',null = True)
-    animal_shelter = models.ForeignKey(AnimalShelter,on_delete=models.Case,related_name="pet_shelter")
+    second_image = models.ImageField(upload_to ='media/',blank = True)
+    third_image = models.ImageField(upload_to ='media/',blank = True)
+    animalshelter = models.ForeignKey(AnimalShelter,on_delete=models.Case,related_name="pet_shelter")
     adoption_fee = models.PositiveIntegerField(blank=True)
     is_rescued = models.BooleanField(default=False)
     story = models.TextField(null=True,blank=True)
-    pincode = models.IntegerField(
-        "PIN code",
-        help_text="6 digits [0-9] PIN code",
-        validators=[MinValueValidator(100000), MaxValueValidator(999999)],
-    )
 
     def __str__(self) -> str:
         return f"Name and Breed:{self.name} - {self.breed}"
 
 class AdoptionForm(models.Model):
     user  = models.ForeignKey(User,on_delete=models.CASCADE,related_name="adoption_form_user")
+    send_form_to = models.ForeignKey(AnimalShelter,on_delete=models.CASCADE,related_name="adoption_form_to")
     state = models.CharField(max_length=200,null=True,blank=True)
     city = models.CharField(max_length=200,null=True,blank=True)
-    street_address = models.CharField(max_length=300,null=True,blank=True)
     pincode = models.IntegerField(
         "PIN code",
         help_text="6 digits [0-9] PIN code",
         validators=[MinValueValidator(100000), MaxValueValidator(999999)],
     )
+    street_address = models.CharField(max_length=300,null=True,blank=True)
     house_choice = (("rent","rent"),("own house","own house"))
     house = models.CharField(max_length=15,choices=house_choice)
     is_allergies = models.BooleanField(default=False)
@@ -148,6 +149,9 @@ class AdoptionForm(models.Model):
     correct_dog_if_misbehaves = models.TextField()
     takes_to_support_a_dog = models.TextField()
     choose_this_particular_dog = models.TextField()
+
+    def __str__(self) -> str:
+        return f" you have received inquiry from {self.user.first_name} " 
 
 
 
@@ -161,12 +165,22 @@ class AdoptionForm(models.Model):
 
 
 
-# @receiver(post_save,sender = settings.AUTH_USER_MODEL)
-# def show_instance(sender,instance,created,*args,**kwargs):
-#     if created == True:
-#         print(f"created new object:sending mail to {instance.email}")
-#     else:
-#         print(f"updated object:sending mail to {instance.email}")
+@receiver(post_save,sender = AdoptionForm)
+def show_instance(sender,instance,created,*args,**kwargs):
+    dic = instance.__dict__
+    name = instance
+    if created == True:
+        send_mail(
+        'New Enquiry',
+        str(instance),
+        settings.EMAIL_HOST_USER,
+        ['shashikantching@gmail.com',],
+        fail_silently=False,)
+
+
+        # print(f"created new object:sending mail to {instance.email}")
+    # else:
+    #     print(f"updated object:sending mail to {instance.email}")
 
 # @receiver(post_delete,sender = settings.AUTH_USER_MODEL)
 # def delete_instance(sender,instance,created,*args,**kwargs):
