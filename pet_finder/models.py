@@ -130,6 +130,7 @@ class Pet(models.Model):
 class AdoptionForm(models.Model):
     user  = models.ForeignKey(User,on_delete=models.CASCADE,related_name="adoption_form_user")
     send_form_to = models.ForeignKey(AnimalShelter,on_delete=models.CASCADE,related_name="adoption_form_to")
+    pet = models.ForeignKey(Pet,on_delete=models.CASCADE,related_name='adoption_form_pet')
     state = models.CharField(max_length=200,null=True,blank=True)
     city = models.CharField(max_length=200,null=True,blank=True)
     pincode = models.IntegerField(
@@ -149,6 +150,7 @@ class AdoptionForm(models.Model):
     correct_dog_if_misbehaves = models.TextField()
     takes_to_support_a_dog = models.TextField()
     choose_this_particular_dog = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 
     def __str__(self) -> str:
         return f" you have received inquiry from {self.user.first_name} " 
