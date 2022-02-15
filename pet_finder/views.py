@@ -24,7 +24,7 @@ from django.conf import settings
 
 class UserInfoViewset(viewsets.ModelViewSet):
     queryset = UserInfo.objects.all()
-    serializer_class = UserInfo
+    serializer_class = UserInfoSerializer
     # permission_classes = (IsAuthenticated,) 
 
 class PetViewset(viewsets.ModelViewSet):
