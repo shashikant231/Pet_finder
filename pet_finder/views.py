@@ -44,7 +44,7 @@ class AdoptionFormViewset(viewsets.ModelViewSet):
     serializer_class =AdoptionFormSerializer
     filter_backends = [DjangoFilterBackend]
     # permission_classes = (IsAuthenticated,) 
-    filterset_fields = ['id','user_id__id']
+    filterset_fields = ['id','user_id__id','animal_shelter_id__id']
 
     # def create(self, request, *args, **kwargs):
     #     data = request.data

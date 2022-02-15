@@ -187,15 +187,35 @@ def show_instance(sender,instance,created,*args,**kwargs):
     from .serializers import AdoptionFormSerializer
 
     data = AdoptionFormSerializer(instance).data
-    print(type(data))
+    print((data))
+    state = data['state']
+    city = data['city']
+    street_address = data['street_address']
+    house = data['house']
+    house = data['house']
+    is_fenced = data['is_fenced']
+    why_do_you_want_a_dog = data['why_do_you_want_a_dog']
+    dog_be_confined_to_your_own_property = data['dog_be_confined_to_your_own_property']
+    provide_exercise = data['provide_exercise']
+    training_willing_to_provide = data['training_willing_to_provide']
+    correct_dog_if_misbehaves = data['correct_dog_if_misbehaves']
+    takes_to_support_a_dog = data['takes_to_support_a_dog']
+    choose_this_particular_dog = data['choose_this_particular_dog']
+    pet_image = data['pet_image']
+    user_pincode = data['user_pincode']
+    user_state = data['user_state']
+    user_city = data['user_city']
 
-    name = instance
+
+
+
+
     if created == True:
         send_mail(
         'New Enquiry',
-        str(instance),
+        f"{user_pincode},{user_city},{user_city},{house},{why_do_you_want_a_dog},{pet_image},{dog_be_confined_to_your_own_property},{provide_exercise},{training_willing_to_provide},{correct_dog_if_misbehaves},{takes_to_support_a_dog},{choose_this_particular_dog},{house},{is_fenced}",
         settings.EMAIL_HOST_USER,
-        ['tanyas1058@gmail.com',],
+        ['shashikantching@gmail.com',],
         fail_silently=False,)
 
 
