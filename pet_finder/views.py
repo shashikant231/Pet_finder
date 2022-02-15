@@ -22,6 +22,11 @@ from django.conf import settings
 
 # Create your views here.
 
+class UserInfoViewset(viewsets.ModelViewSet):
+    queryset = UserInfo.objects.all()
+    serializer_class = UserInfo
+    # permission_classes = (IsAuthenticated,) 
+
 class PetViewset(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
@@ -32,7 +37,7 @@ class PetViewset(viewsets.ModelViewSet):
 class AnimalShelterViewset(viewsets.ModelViewSet):
     queryset = AnimalShelter.objects.all()
     serializer_class = AnimalShelterSerializer
-    permission_classes = (IsAuthenticated,) 
+    # permission_classes = (IsAuthenticated,) 
 
 class AdoptionFormViewset(viewsets.ModelViewSet):
     queryset = AdoptionForm.objects.all()

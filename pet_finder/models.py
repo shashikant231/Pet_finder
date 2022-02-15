@@ -21,6 +21,7 @@ import json
 
 
 
+
 PHONE_HELP_TEXT = "For e.g +91-95544-95544, +91-12345-54321, etc."
 
 class CustomAccountManager(BaseUserManager):
@@ -86,6 +87,23 @@ class User(AbstractBaseUser, CommonFields,PermissionsMixin):
     def __str__(self):
         return self.user_name
 
+class UserInfo(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    profile_pic = models.ImageField(upload_to ='media/', blank=True)
+    phone_number = PhoneNumberField("Phone Number", help_text=PHONE_HELP_TEXT)
+    pincode = models.IntegerField(
+        "PIN code",
+        help_text="6 digits [0-9] PIN code",
+        validators=[MinValueValidator(100000), MaxValueValidator(999999)],
+    )
+    state = models.CharField(max_length=50,null=False)
+    city = models.CharField(max_length=80,null=False)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
 
 class AnimalShelter(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="animal_name")
@@ -110,7 +128,7 @@ class Pet(models.Model):
     breed = models.CharField(max_length=30,blank=False)
     gender_choices = (("Male", "Male"), ("Female", "Female"))
     gender = models.CharField(choices=gender_choices, max_length=10)
-    color = models.CharField(max_length=20,blank=True)
+    color = models.CharField(max_length=50,blank=True)
     age = models.CharField(max_length=30,blank=False)
     size_choices = (("Puppy", "Puppy"), ("Adult", "Adult"),("Medium","Medium"))
     size = models.CharField(choices=size_choices,max_length=10,blank=False)
@@ -128,16 +146,12 @@ class Pet(models.Model):
         return f"Name and Breed:{self.name} - {self.breed}"
 
 class AdoptionForm(models.Model):
-    user  = models.ForeignKey(User,on_delete=models.CASCADE,related_name="adoption_form_user")
-    send_form_to = models.ForeignKey(AnimalShelter,on_delete=models.CASCADE,related_name="adoption_form_to")
+    user_id  = models.ForeignKey(User,on_delete=models.CASCADE,related_name="adoption_form_user")
+    user_info_id = models.ForeignKey(UserInfo,on_delete=models.CASCADE,related_name="adoption_form_user_info")
+    animal_shelter_id = models.ForeignKey(AnimalShelter,on_delete=models.CASCADE,related_name="adoption_form_to")
     pet = models.ForeignKey(Pet,on_delete=models.CASCADE,related_name='adoption_form_pet')
     state = models.CharField(max_length=200,null=True,blank=True)
     city = models.CharField(max_length=200,null=True,blank=True)
-    pincode = models.IntegerField(
-        "PIN code",
-        help_text="6 digits [0-9] PIN code",
-        validators=[MinValueValidator(100000), MaxValueValidator(999999)],
-    )
     street_address = models.CharField(max_length=300,null=True,blank=True)
     house_choice = (("rent","rent"),("own house","own house"))
     house = models.CharField(max_length=15,choices=house_choice)
@@ -153,7 +167,7 @@ class AdoptionForm(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 
     def __str__(self) -> str:
-        return f" you have received inquiry from {self.user.first_name} " 
+        return f" you have received inquiry from {self.user_id.first_name} " 
 
 
 
@@ -170,6 +184,11 @@ class AdoptionForm(models.Model):
 @receiver(post_save,sender = AdoptionForm)
 def show_instance(sender,instance,created,*args,**kwargs):
     dic = instance.__dict__
+    from .serializers import AdoptionFormSerializer
+
+    data = AdoptionFormSerializer(instance).data
+    print(type(data))
+
     name = instance
     if created == True:
         send_mail(
