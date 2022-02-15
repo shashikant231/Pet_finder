@@ -41,7 +41,15 @@ class AdoptionFormSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         resp = super().to_representation(instance)
         user_info_id = resp['user_info_id']
+        user_id = resp['user_id']
+        pet_id = resp['pet']
+        resp['user_email'] = User.objects.filter(id = user_id).values('email')[0]['email']
+        resp['phone_number'] = UserInfo.objects.filter(id = user_info_id).values('phone_number')[0]['phone_number']
+        image = Pet.objects.filter(id = pet_id).values('first_image')
+        # print(image[0]['first_image'])
+        resp['pet_image'] = "http://127.0.0.1:8000/media" + image[0]['first_image']
         resp['user_pincode'] = UserInfo.objects.filter(id = user_info_id).values('pincode')[0]['pincode']
         resp['user_state'] = UserInfo.objects.filter(id = user_info_id).values('state')[0]['state']
         resp['user_city'] = UserInfo.objects.filter(id = user_info_id).values('city')[0]['city']
+
         return resp

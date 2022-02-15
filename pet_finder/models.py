@@ -195,7 +195,7 @@ def show_instance(sender,instance,created,*args,**kwargs):
         'New Enquiry',
         str(instance),
         settings.EMAIL_HOST_USER,
-        ['shashikantching@gmail.com',],
+        ['tanyas1058@gmail.com',],
         fail_silently=False,)
 
 
