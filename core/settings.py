@@ -158,3 +158,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'trackeriss511@gmail.com'
 EMAIL_HOST_PASSWORD = "doms1234@7"
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL' : 'password/reset/confirm/{uid}/{token}',
+}
