@@ -26,6 +26,8 @@ class UserInfoViewset(viewsets.ModelViewSet):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoSerializer
     # permission_classes = (IsAuthenticated,) 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user__id']
 
 class PetViewset(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
@@ -38,6 +40,8 @@ class AnimalShelterViewset(viewsets.ModelViewSet):
     queryset = AnimalShelter.objects.all()
     serializer_class = AnimalShelterSerializer
     # permission_classes = (IsAuthenticated,) 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user__id']
 
 class AdoptionFormViewset(viewsets.ModelViewSet):
     queryset = AdoptionForm.objects.all()

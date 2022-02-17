@@ -132,7 +132,9 @@ class Pet(models.Model):
     age = models.CharField(max_length=30,blank=False)
     size_choices = (("Puppy", "Puppy"), ("Adult", "Adult"),("Medium","Medium"))
     size = models.CharField(choices=size_choices,max_length=10,blank=False)
-    vaccination_choices = (("Not Vaccianted", "Not Vaccianted"), ("Partially Vaccinated", "Partially Vaccinated"),("Completely vaccinated","Completely Vaccinated"))
+    vaccination_choices = (("Not Vaccianted", "Not Vaccianted"), 
+                            ("Partially Vaccinated", "Partially Vaccinated"),
+                            ("Completely vaccinated","Completely Vaccinated"))
     vaccination = models.CharField(choices=vaccination_choices,max_length=30,blank=False)
     first_image = models.ImageField(upload_to ='media/')
     second_image = models.ImageField(upload_to ='media/',blank = True)
