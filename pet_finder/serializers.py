@@ -24,6 +24,11 @@ class PetSerializer(serializers.ModelSerializer):
         res['pincode'] = AnimalShelter.objects.filter(id = animal_id).values('pincode')[0]['pincode']
         res['state'] = AnimalShelter.objects.filter(id = animal_id).values('state')[0]['state']
         res['city'] = AnimalShelter.objects.filter(id = animal_id).values('city')[0]['city']
+        res['contact_no'] = AnimalShelter.objects.filter(id = animal_id).values('contact_no')[0]['contact_no']
+        user_id = AnimalShelter.objects.filter(id=animal_id).values('user')[0]['user']
+        res['user_email'] = User.objects.filter(id = user_id).values('email')[0]['email']
+        print(user_id)
+
         res['animal_shelter_name'] = animal_name[0]['organisations_name']
         return res
 

@@ -118,6 +118,7 @@ class AnimalShelter(models.Model):
     city = models.CharField(max_length=80,null=False)
     organisations_mission = models.TextField(null=True,blank=True)
     organisations_policies = models.TextField(null=True,blank=True)
+    adoption_procedure = models.TextField(null=True,blank=True)
     def __str__(self):
         return self.organisations_name
 
