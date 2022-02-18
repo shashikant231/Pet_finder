@@ -168,6 +168,8 @@ class AdoptionForm(models.Model):
     takes_to_support_a_dog = models.TextField()
     choose_this_particular_dog = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+    status_choice = (('Pending','Pending'),('Accepted','Accepted'),('Rejected','Rejected'))
+    status = models.CharField(choices=status_choice,max_length=20,default='pending')
 
     def __str__(self) -> str:
         return f" you have received inquiry from {self.user_id.first_name} " 
@@ -212,14 +214,43 @@ def show_instance(sender,instance,created,*args,**kwargs):
 
 
 
-
     if created == True:
         send_mail(
         'New Enquiry',
-        f"{user_pincode},{user_city},{user_city},{house},{why_do_you_want_a_dog},{pet_image},{dog_be_confined_to_your_own_property},{provide_exercise},{training_willing_to_provide},{correct_dog_if_misbehaves},{takes_to_support_a_dog},{choose_this_particular_dog},{house},{is_fenced}",
+        f"{user_pincode},{user_city},{user_city},{house},{why_do_you_want_a_dog},{pet_image},{dog_be_confined_to_your_own_property},{provide_exercise},{training_willing_to_provide},{correct_dog_if_misbehaves},{takes_to_support_a_dog},{choose_this_particular_dog},{house},{is_fenced},{state},{city},{street_address}",
         settings.EMAIL_HOST_USER,
         ['shashikantching@gmail.com',],
         fail_silently=False,)
+
+    if created == False:
+        if instance.status == "Accepted":
+            animal_shelter_id = instance.animal_shelter_id.id
+            user_id = instance.user_id.id
+            organistion_name = AnimalShelter.objects.filter(id=animal_shelter_id).values('organisations_name')[0]['organisations_name']
+            user_email = User.objects.filter(id=user_id).values('email')[0]['email']
+            send_mail(
+                'Enquiry Accepted',
+                f"{organistion_name} has accepted has accepted your adoption form and would like to proceed with the adoption process. Please keep a check on your emails and messages, you will be contacted by the {organistion_name} shortly.",
+                settings.EMAIL_HOST_USER,
+                [user_email,],
+        fail_silently=False,
+
+            )
+        elif instance.status == "Rejected":
+            animal_shelter_id = instance.animal_shelter_id.id
+            user_id = instance.user_id.id
+            organistion_name = AnimalShelter.objects.filter(id=animal_shelter_id).values('organisations_name')[0]['organisations_name']
+            user_email = User.objects.filter(id=user_id).values('email')[0]['email']
+            send_mail(
+                'Enquiry Rejected',
+                f"We are sorry to inform you that the {organistion_name} cannot move forward with your adoption application. Try applying for other pets.Thanks",
+                settings.EMAIL_HOST_USER,
+                [user_email,],
+        fail_silently=False,
+
+            )
+
+
 
 
         # print(f"created new object:sending mail to {instance.email}")
