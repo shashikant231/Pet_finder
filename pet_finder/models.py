@@ -107,6 +107,7 @@ class UserInfo(models.Model):
 
 class AnimalShelter(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="animal_name")
+    profile_pic = models.ImageField(upload_to ='media/')
     organisations_name = models.CharField(max_length=100)
     contact_no = PhoneNumberField("Phone Number", help_text=PHONE_HELP_TEXT)
     pincode = models.IntegerField(
@@ -177,15 +178,6 @@ class AdoptionForm(models.Model):
 
 
 
-
-
-
-# @receiver(pre_save,sender = settings.AUTH_USER_MODEL)
-# def pre_save_method(sender,instance,*args,**kwargs):
-#     print(instance.email,instance.id)
-
-
-
 @receiver(post_save,sender = AdoptionForm)
 def show_instance(sender,instance,created,*args,**kwargs):
     dic = instance.__dict__
@@ -251,15 +243,6 @@ def show_instance(sender,instance,created,*args,**kwargs):
             )
 
 
-
-
-        # print(f"created new object:sending mail to {instance.email}")
-    # else:
-    #     print(f"updated object:sending mail to {instance.email}")
-
-# @receiver(post_delete,sender = settings.AUTH_USER_MODEL)
-# def delete_instance(sender,instance,created,*args,**kwargs):
-#     print(f"Deleted : {instance}")
 
 
 
