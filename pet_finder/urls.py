@@ -12,4 +12,4 @@ router.register("user_info",UserInfoViewset,basename='user_info_api')
 
 urlpatterns = [
     path('',include(router.urls)),
-]
+] + router.urls
