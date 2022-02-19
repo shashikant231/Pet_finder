@@ -47,14 +47,18 @@ class AdoptionFormSerializer(serializers.ModelSerializer):
         resp = super().to_representation(instance)
         user_info_id = resp['user_info_id']
         user_id = resp['user_id']
-        pet_id = resp['pet']
+        animal_shelter_id = resp['animal_shelter_id']
+        print(animal_shelter_id)
+        # pet_id = resp['pet']
         resp['user_email'] = User.objects.filter(id = user_id).values('email')[0]['email']
         resp['phone_number'] = UserInfo.objects.filter(id = user_info_id).values('phone_number')[0]['phone_number']
-        image = Pet.objects.filter(id = pet_id).values('first_image')
-        # print(image[0]['first_image'])
-        resp['pet_image'] = "http://127.0.0.1:8000/media/" + image[0]['first_image']
         resp['user_pincode'] = UserInfo.objects.filter(id = user_info_id).values('pincode')[0]['pincode']
         resp['user_state'] = UserInfo.objects.filter(id = user_info_id).values('state')[0]['state']
         resp['user_city'] = UserInfo.objects.filter(id = user_info_id).values('city')[0]['city']
+        resp['customer_pic'] = "http://127.0.0.1:8000/media/" + UserInfo.objects.filter(id=user_info_id).values('profile_pic')[0]['profile_pic']
+        resp['customer_name'] = UserInfo.objects.filter(id=user_info_id).values('first_name')[0]['first_name']
+        resp['animal_shelter_pic'] = "http://127.0.0.1:8000/media/" + AnimalShelter.objects.filter(id=animal_shelter_id).values('profile_pic')[0]['profile_pic']
+        resp['animal_shelter_name'] = AnimalShelter.objects.filter(id=animal_shelter_id).values('organisations_name')[0]['organisations_name']
+
 
         return resp
