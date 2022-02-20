@@ -219,7 +219,7 @@ def show_instance(sender,instance,created,*args,**kwargs):
     if created == True:
         send_mail(
         'New Enquiry',
-        f"{user_pincode},{user_city},{user_city},{house},{why_do_you_want_a_dog},{pet_image},{dog_be_confined_to_your_own_property},{provide_exercise},{training_willing_to_provide},{correct_dog_if_misbehaves},{takes_to_support_a_dog},{choose_this_particular_dog},{house},{is_fenced},{state},{city},{street_address}",
+        f"{user_pincode},{user_city},{user_city},{house},{why_do_you_want_a_dog},{dog_be_confined_to_your_own_property},{provide_exercise},{training_willing_to_provide},{correct_dog_if_misbehaves},{takes_to_support_a_dog},{choose_this_particular_dog},{house},{is_fenced},{state},{city},{street_address}",
         settings.EMAIL_HOST_USER,
         ['shashikantching@gmail.com',],
         fail_silently=False,)
