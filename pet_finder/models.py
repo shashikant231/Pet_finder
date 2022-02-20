@@ -100,6 +100,8 @@ class UserInfo(models.Model):
     )
     state = models.CharField(max_length=50,null=False)
     city = models.CharField(max_length=80,null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -120,6 +122,9 @@ class AnimalShelter(models.Model):
     organisations_mission = models.TextField(null=True,blank=True)
     organisations_policies = models.TextField(null=True,blank=True)
     adoption_procedure = models.TextField(null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return self.organisations_name
 
@@ -145,6 +150,9 @@ class Pet(models.Model):
     adoption_fee = models.PositiveIntegerField(blank=True)
     is_rescued = models.BooleanField(default=False)
     story = models.TextField(null=True,blank=True)
+    is_adopted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"Name and Breed:{self.name} - {self.breed}"
@@ -171,6 +179,8 @@ class AdoptionForm(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
     status_choice = (('Pending','Pending'),('Accepted','Accepted'),('Rejected','Rejected'))
     status = models.CharField(choices=status_choice,max_length=20,default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f" you have received inquiry from {self.user_id.first_name} " 
@@ -198,7 +208,7 @@ def show_instance(sender,instance,created,*args,**kwargs):
     correct_dog_if_misbehaves = data['correct_dog_if_misbehaves']
     takes_to_support_a_dog = data['takes_to_support_a_dog']
     choose_this_particular_dog = data['choose_this_particular_dog']
-    pet_image = data['pet_image']
+    # pet_image = data['pet_image']
     user_pincode = data['user_pincode']
     user_state = data['user_state']
     user_city = data['user_city']

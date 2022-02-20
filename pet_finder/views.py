@@ -34,7 +34,7 @@ class PetViewset(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
     # permission_classes = (IsAuthenticated,) 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['id','breed','gender','age','size','animalshelter__pincode']
+    filterset_fields = ['id','breed','gender','age','size','animalshelter__pincode','animalshelter_id']
 
 class AnimalShelterViewset(viewsets.ModelViewSet):
     queryset = AnimalShelter.objects.all()
