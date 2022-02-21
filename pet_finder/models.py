@@ -212,6 +212,8 @@ def show_instance(sender,instance,created,*args,**kwargs):
     user_pincode = data['user_pincode']
     user_state = data['user_state']
     user_city = data['user_city']
+    user_info_id = data['user_info_id']
+    pet_id = data['pet']
 
 
 
@@ -220,10 +222,13 @@ def show_instance(sender,instance,created,*args,**kwargs):
         animal_shelter_id = instance.animal_shelter_id.id
         animal_shelter_user_id = AnimalShelter.objects.filter(id=animal_shelter_id).values('user')[0]['user']
         animal_shelter_user_email = User.objects.filter(id=animal_shelter_user_id).values('email')[0]['email']
+        pet_name = Pet.objects.filter(id=pet_id).values('name')[0]['name']
+        first_name = UserInfo.objects.filter(id=user_info_id).values('first_name')[0]['first_name']
+        last_name = UserInfo.objects.filter(id=user_info_id).values('last_name')[0]['last_name']
 
         send_mail(
         'New Enquiry',
-        f"{user_pincode},{user_city},{user_city},{house},{why_do_you_want_a_dog},{dog_be_confined_to_your_own_property},{provide_exercise},{training_willing_to_provide},{correct_dog_if_misbehaves},{takes_to_support_a_dog},{choose_this_particular_dog},{house},{is_fenced},{state},{city},{street_address}",
+        f"{first_name}  {last_name} wants to adopt  {pet_name} .Please check the applications section on our website for more details.",
         settings.EMAIL_HOST_USER,
         [animal_shelter_user_email,],
         fail_silently=False,)
@@ -238,7 +243,7 @@ def show_instance(sender,instance,created,*args,**kwargs):
                 'Enquiry Accepted',
                 f"{organistion_name} has accepted has accepted your adoption form and would like to proceed with the adoption process. Please keep a check on your emails and messages, you will be contacted by the {organistion_name} shortly.",
                 settings.EMAIL_HOST_USER,
-                [user_email,],
+                [user_email,'shashikantching@gamil.com',],
         fail_silently=False,
 
             )
