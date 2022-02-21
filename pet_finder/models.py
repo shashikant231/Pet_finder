@@ -109,7 +109,7 @@ class UserInfo(models.Model):
 
 class AnimalShelter(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="animal_name")
-    profile_pic = models.ImageField(upload_to ='media/')
+    profile_pic = models.ImageField(upload_to ='media/',blank=True)
     organisations_name = models.CharField(max_length=100)
     contact_no = PhoneNumberField("Phone Number", help_text=PHONE_HELP_TEXT)
     pincode = models.IntegerField(
