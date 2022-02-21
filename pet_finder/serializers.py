@@ -49,7 +49,7 @@ class AdoptionFormSerializer(serializers.ModelSerializer):
         user_id = resp['user_id']
         animal_shelter_id = resp['animal_shelter_id']
         print(animal_shelter_id)
-        # pet_id = resp['pet']
+        pet_id = resp['pet']
         resp['user_email'] = User.objects.filter(id = user_id).values('email')[0]['email']
         resp['phone_number'] = UserInfo.objects.filter(id = user_info_id).values('phone_number')[0]['phone_number']
         resp['user_pincode'] = UserInfo.objects.filter(id = user_info_id).values('pincode')[0]['pincode']
@@ -59,6 +59,7 @@ class AdoptionFormSerializer(serializers.ModelSerializer):
         resp['customer_name'] = UserInfo.objects.filter(id=user_info_id).values('first_name')[0]['first_name']
         resp['animal_shelter_pic'] = "http://127.0.0.1:8000/media/" + AnimalShelter.objects.filter(id=animal_shelter_id).values('profile_pic')[0]['profile_pic']
         resp['animal_shelter_name'] = AnimalShelter.objects.filter(id=animal_shelter_id).values('organisations_name')[0]['organisations_name']
+        resp['pet_name'] = Pet.objects.filter(id=pet_id).values('name')[0]['name']
 
 
         return resp
