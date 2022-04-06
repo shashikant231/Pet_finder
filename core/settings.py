@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 
+#setting env file
+from dotenv import load_dotenv
+load_dotenv() 
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p$fysig+!46f+v9^+9h&sq_e*5n*b*r*2dcn76bl^fet=2wz7&'
+# SECRET_KEY = 'django-insecure-p$fysig+!46f+v9^+9h&sq_e*5n*b*r*2dcn76bl^fet=2wz7&'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -144,6 +152,30 @@ STATIC_URL = 'static/'
 #media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers' : True,
+    "formatters": {
+        "verbose": {
+            "format": "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
+        },
+        "simple": {"format": "%(levelname)s %(message)s"},
+    },
+    'handlers' : {
+        'file':{
+            'class' : 'logging.FileHandler',
+            'filename' : 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'level': 'INFO',
+        },
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

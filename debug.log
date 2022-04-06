@@ -1,0 +1,12 @@
+Watching for file changes with StatReloader
+/home/shashii/pet-finder/core/core/settings.py changed, reloading.
+Watching for file changes with StatReloader
+/home/shashii/pet-finder/core/core/settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/v1/pet_api/2/ HTTP/1.1" 200 18012
+/home/shashii/pet-finder/core/core/settings.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /api/v1/pet_api/3 HTTP/1.1" 301 0
+"GET /api/v1/pet_api/3/ HTTP/1.1" 200 18733
+Bad Request: /api/v1/pet_api/3/
+"PUT /api/v1/pet_api/3/ HTTP/1.1" 400 16944
