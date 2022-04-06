@@ -11,6 +11,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+#setting env file
+from dotenv import load_dotenv
+load_dotenv() 
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p$fysig+!46f+v9^+9h&sq_e*5n*b*r*2dcn76bl^fet=2wz7&'
+# SECRET_KEY = 'django-insecure-p$fysig+!46f+v9^+9h&sq_e*5n*b*r*2dcn76bl^fet=2wz7&'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,8 +51,12 @@ INSTALLED_APPS = [
     'pet_finder',
     'phonenumber_field',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'django_filters',
     'corsheaders',
+    'django_extensions',
+
 
 ]
 
@@ -121,14 +134,63 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
 
+#media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers' : True,
+    "formatters": {
+        "verbose": {
+            "format": "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
+        },
+        "simple": {"format": "%(levelname)s %(message)s"},
+    },
+    'handlers' : {
+        'file':{
+            'class' : 'logging.FileHandler',
+            'filename' : 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'level': 'INFO',
+        },
+    },
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'pet_finder.User'
+
+#Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'trackeriss511@gmail.com'
+EMAIL_HOST_PASSWORD = "doms1234@7"
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL' : 'password/reset/confirm/{uid}/{token}',
+}
