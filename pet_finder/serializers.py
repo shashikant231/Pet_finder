@@ -48,7 +48,7 @@ class AdoptionFormSerializer(serializers.ModelSerializer):
         user_info_id = resp['user_info_id']
         user_id = resp['user_id']
         animal_shelter_id = resp['animal_shelter_id']
-        print(animal_shelter_id)
+        # print(animal_shelter_id)
         pet_id = resp['pet']
         resp['user_email'] = User.objects.filter(id = user_id).values('email')[0]['email']
         resp['phone_number'] = UserInfo.objects.filter(id = user_info_id).values('phone_number')[0]['phone_number']
