@@ -23,3 +23,9 @@ API,PostgreSQL Database,Amazon S3,Django-rest-auth and more.
 ```
 http://127.0.0.1:8000/api/v1pet_api/  (CRUD APIs for Pet)
 http://127.0.0.1:8000/api/v1animal_shelter_api/ (CRUD APIs for animal shelter )
+
+## Database design
+![Screenshot_20230214_145650](https://user-images.githubusercontent.com/48221957/218694675-78988ab5-6717-458a-a09e-45bcfad2cb71.png)
+
+
+
